@@ -1,0 +1,9 @@
+<div class="filter__block" ng-class="{active:showBlock}" ng-init="showBlock = false;">
+    <p ng-click="showBlock = !showBlock;">
+        {{$ctrl.title}}
+        <i></i>
+    </p>
+    <div class="filter__collaps" ng-class="{'filter__collaps_hidden':!showBlock}" ng-slide-down="showBlock" lazy-render duration="0.3">
+       <div ng-transclude></div>
+    </div>
+</div>

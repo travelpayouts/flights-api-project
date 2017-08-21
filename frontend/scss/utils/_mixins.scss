@@ -1,0 +1,86 @@
+@mixin transition($default-transition) {
+  -webkit-transition: $default-transition;
+     -moz-transition: $default-transition;
+      -ms-transition: $default-transition;
+		-o-transition: $default-transition;
+           transition: $default-transition;
+}
+
+@mixin radius($border-radius) {
+  -webkit-border-radius: $border-radius;
+     -moz-border-radius: $border-radius;      
+           border-radius:$border-radius;
+}
+
+@mixin rotate($rotate) {
+  -webkit-transform: rotate($rotate);
+     -moz-transform: rotate($rotate);
+      -ms-transform: rotate($rotate);
+		-o-transform: rotate($rotate);
+           transform: rotate($rotate);
+}
+
+@mixin scale($scale) {
+  -webkit-transform: scale($scale);
+     -moz-transform: scale($scale);
+      -ms-transform: scale($scale);
+		-o-transform: scale($scale);
+           transform: scale($scale);
+}
+
+@mixin shadow($shadow) {
+  -webkit-box-shadow: ($shadow);
+     -moz-box-shadow: ($shadow);
+      -ms-box-shadow: ($shadow);
+		-o-box-shadow: ($shadow);
+           box-shadow: ($shadow);
+}
+
+@mixin gradient($aside,$aside-invert,$color1,$color2) {
+    background: -moz-linear-gradient($aside, $color1 0%, $color2 100%);
+	background: -webkit-linear-gradient($aside, $color1 0%,$color2 100%);
+	background: -o-linear-gradient($aside, $color1 0%,$color2 100%);
+	background: -ms-linear-gradient($aside, $color1 0%,$color2 100%);
+	background: linear-gradient(to $aside-invert, $color1 0%,$color2 100%);	
+}
+
+@mixin center_transform() {
+  	position:absolute;
+	left:50%;top:50%;
+	transform:translate(-50%, -50%);
+	-moz-transform:translate(-50%, -50%);
+	-webkit-transform:translate(-50%, -50%);
+	-ms-transform:translate(-50%, -50%);
+	-o-transform:translate(-50%, -50%);
+}
+
+@mixin vertical_center_transform() {
+  	position:absolute;
+	left:0;top:50%;
+	width: 100%;
+	transform:translate(0, -50%);
+	-moz-transform:translate(0, -50%);
+	-webkit-transform:translate(0, -50%);
+	-ms-transform:translate(0, -50%);
+	-o-transform:translate(0, -50%);
+}
+
+@mixin button($button-bg, $button-border, $button-border-color, $button-pad, $button-size, $button-line-height, $height-button, $button-radius) {
+	display: inline-block;
+	vertical-align: top;
+	margin: 0 0 0 0;
+	padding: 10px $button-pad 0 $button-pad;
+	background: $button-bg;
+	border: $button-border solid $button-border-color;
+	font-size: $button-size;
+	line-height: $button-line-height;
+	height: $height-button;
+	position: relative;
+	@include radius($button-radius);
+}
+
+@mixin font($font-s, $font-h, $font-c) {
+    font-size: $font-s;
+    line-height: $font-h;
+    color:$font-c;
+}

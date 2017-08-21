@@ -1,0 +1,58 @@
+<div class="filter__top" ng-class="{'filter__top__nofilter':$ctrl.isEmptyFilter()}">
+    <p>show tickets:
+        <span>{{$ctrl.limit > $ctrl.count ? $ctrl.count : $ctrl.limit}}/{{$ctrl.count}}</span>
+    </p>
+    <button ng-click="$ctrl.clearFilter();" ng-if="!$ctrl.isEmptyFilter()">
+        <i></i><span>clear filters</span>
+    </button>
+</div>
+<div class="filter__panel">
+    <div class="filter__block">
+        <p class="filter__block_gray">sort by:</p>
+        <div class="filter__sort">
+            <ul class="check-list">
+                <li class="check-list__check" ng-repeat="param in $ctrl.sortingParams"
+                    ng-click="$ctrl.orderBy = param.id;">
+                    <label class="check-list__lable">
+                        <div class="ng-radio" ng-class="{checked:$ctrl.orderBy === param.id}"></div>
+                        {{param.label}}
+                    </label>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<search-filter-panel title="'prices'">
+    <rzslider
+            rz-slider-model="$ctrl.filterBy.price.min"
+            rz-slider-high="$ctrl.filterBy.price.max"
+            rz-slider-options="$ctrl.priceSlider"></rzslider>
+</search-filter-panel>
+<search-filter-panel title="'Flight duration'">
+    <rzslider
+            rz-slider-model="$ctrl.filterBy.duration.min"
+            rz-slider-high="$ctrl.filterBy.duration.max"
+            rz-slider-options="$ctrl.durationSlider"></rzslider>
+</search-filter-panel>
+<search-filter-panel title="'Number of stops'">
+    <ul class="check-list">
+        <li class="check-list__check checked" ng-repeat="stopsNumber in $ctrl.stopsCount"
+            ng-click="$ctrl.toggleSelection('stops',stopsNumber)">
+            <label class="check-list__lable">
+                <div class="ng-checkbox" ng-class="{checked:$ctrl.filterBy.stops.indexOf(stopsNumber) > -1}"></div>
+                {{stopsNumber}}
+            </label>
+        </li>
+    </ul>
+</search-filter-panel>
+<search-filter-panel title="'airports'">
+    <ul class="check-list">
+        <li class="check-list__check checked" ng-repeat="(airport, airportData) in $ctrl.airports"
+            ng-click="$ctrl.toggleSelection('airport',airport)">
+            <label class="check-list__lable">
+                <div class="ng-checkbox" ng-class="{checked:$ctrl.filterBy.airport.indexOf(airport) > -1}"></div>
+                {{airportData.name}}
+            </label>
+        </li>
+    </ul>
+</search-filter-panel>

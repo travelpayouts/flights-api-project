@@ -1,0 +1,36 @@
+@import "../base/_reset";
+@import "../base/_fonts";
+
+/* example mixins */
+
+.border-radius{
+	@include radius(10px);
+}
+.rotate{
+	@include rotate(90deg);
+}
+.scale{
+	@include scale(0.5);
+}
+.shadow{
+	@include shadow(0 5px 5px 0 rgba(0,0,0,0.5));
+}
+.button{
+	@include button(
+		#000,1px,#f0f0f0,25px,16px,19px,40px,20px
+	);
+}
+.font{
+	@include font(14px,18px,#000);
+}
+.center_transform{
+	@include center_transform();
+}
+.verrical_center_transform{
+	@include verrical_center_transform();
+}
+.gradient{
+	@include gradient(left, right, rgba(0,0,0,1), rgba(255,255,255,1));
+}
+
+/* example mixins */

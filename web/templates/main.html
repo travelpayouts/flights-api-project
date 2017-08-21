@@ -1,0 +1,51 @@
+<div class="main-wrapper" ng-class="{'main-wrapper-index':$state.current.name === 'index'}"><!-- BEGIN HEADER -->
+    <main class="content">
+        <ui-view></ui-view>
+    </main>
+    <header class="header">
+        <div class="wrapper">
+            <div class="header__logo">
+                <a ui-sref="index">
+                    <img src="img/header__logo.png" alt="logo">
+                    <span>Logo</span>
+                </a>
+            </div>
+            <div class="header__currency" ng-init="showCurrency = false;"
+                 click-outside="showCurrency = false;" outside-if-not="showCurrency">
+                <a class="header__currency-toggle" ng-click="showCurrency = !showCurrency;" href="#"><strong ng-bind-html="currency.sign"></strong>{{currency.label}}</a>
+                <div ng-class="{visible:showCurrency}"
+                     class="dropdown-menu ng-popover ng-popover-orient-bottom ng-popover-orient-right"
+                     style="right: 0;left: auto;margin-top: 10px;margin-right: -5px;">
+                        <ul class="dropdown-menu-list">
+                            <li ng-repeat="item in currencyList" ng-click="setCurrency(item);">
+                                <a class="header__currency-item" href="#"><strong ng-bind-html="item.sign"></strong>{{item.label}}</a>
+                            </li>
+                        </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- HEADER EOF   -->
+    <!-- BEGIN FOOTER -->
+    <footer class="footer">
+        <div class="wrapper">
+            <div class="footer__fname">
+                <a href="#">Travelpayouts 2008-2017</a>
+            </div>
+            <div class="footer__social">
+                <ul>
+                    <li><a class="footer__social_facebook" href="#"></a></li>
+                    <li><a class="footer__social_twitter" href="#"></a></li>
+                </ul>
+            </div>
+            <div class="footer__menu">
+                <ul>
+                    <li><a href="#">About us</a></li>
+                    <li><a href="#">Terms of service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    <!-- FOOTER EOF   -->
+</div>

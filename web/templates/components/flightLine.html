@@ -1,0 +1,19 @@
+<ul>
+    <li ng-repeat="city in $ctrl.airports | orderBy:'timestamp'">
+        <div class="tickets__point">
+            <div class="tickets__tooltip">
+                    <p class="tickets__tooltip-direction" ng-repeat="flightInfo in city.data | orderBy:'timestamp'">
+                        <strong><span ng-bind="city.airports.length >1 && flightInfo.direction === 'departure' ? $ctrl.travelDirection['change']: $ctrl.travelDirection[flightInfo.direction]"></span>
+                        {{$ctrl.airportsData[flightInfo.airport].name}}</strong>, {{$ctrl.airportsData[flightInfo.airport].city}}
+                        <br>
+                        {{flightInfo.date}}
+                        {{flightInfo.time}}
+                    </p>
+            </div>
+        </div>
+        <span ng-repeat="airport in city.airports | orderBy:'timestamp'">
+            {{airport}}<span ng-if="!$last">/</span>
+        </span>
+    </li>
+</ul>
+<div class="tickets__line-way_direct" ng-if="$ctrl.airports.length === 2">direct</div>

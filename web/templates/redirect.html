@@ -1,0 +1,22 @@
+<div class="redirect-page">
+
+    <div class="redirect-page-processing"
+    ng-if="!resolved">
+        We are preparing a link. Please wait for a moment.
+    </div>
+    <div ng-if="!data.error"><img
+            ng-src="//yasen.aviasales.ru/adaptors/pixel_click.png?click_id={{data.click_id}}&gate_id={{data.gate_id}}"
+            alt="">
+        <div ng-if="data.method === 'POST'">
+            <form id="redirect_params_form" method="POST" action="{{trustSrc(data.url)}}">
+                <input ng-repeat="(name,value) in data.params" type="hidden" name='{{name}}' value='{{value}}'>
+            </form>
+        </div>
+        <div class="redirect-page-processing">
+            We are preparing a link. Please wait for a moment.
+        </div>
+    </div>
+    <div class="redirect-page-error" ng-if="data.error">
+        Unfortunately link has expired.
+    </div>
+</div>

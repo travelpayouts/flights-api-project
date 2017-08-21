@@ -1,0 +1,149 @@
+/*
+================================================================================
+|                                     HEADER                                   |
+================================================================================
+*/
+.header {
+  background: #179ac3;
+  width: 100%;
+  height: 64px;
+  min-width: $min-width;
+  text-align: left;
+  order: 1;
+  -webkit-order: 1;
+  padding-top: 17px;
+  &__logo {
+    float: left;
+    text-transform: uppercase;
+    img {
+      margin-right: 7px;
+    }
+    span {
+      color: #fff;
+      font-size: 30px;
+      text-transform: uppercase;
+      vertical-align: top;
+    }
+  }
+  &__lang {
+    display: inline-block;
+    float: right;
+    text-transform: uppercase;
+    color: #fff;
+    padding-top: 8px;
+    position: relative;
+    &.opened .box-list {
+      display: block;
+    }
+    a {
+      min-width: 100px;
+    }
+    span {
+      font-size: 11px;
+      vertical-align: top;
+      line-height: 1.7;
+      margin-left: 9px;
+      color: #fff;
+    }
+  }
+  .box-list {
+    position: absolute;
+    z-index: 10001;
+    display: none;
+    background: #ebebeb;
+    width: 161px;
+    padding: 8px;
+    top: 41px;
+    left: 50%;
+    margin-left: -76px;
+    @include radius(5px);
+    &:after {
+      content: "";
+      border: 10px solid transparent;
+      border-bottom: 10px solid #ebebeb;
+      top: -18px;
+      left: 50%;
+      position: absolute;
+      z-index: 10002;
+      margin-left: -10px;
+    }
+    ul li {
+      list-style-type: none;
+      padding-bottom: 0;
+      font-size: 11px;
+      vertical-align: top;
+      line-height: 2.2;
+      margin-left: 9px;
+      color: #555555;
+      font {
+        display: none;
+      }
+      &:hover {
+        color: $blue;
+        font-weight: 700;
+      }
+    }
+    img {
+      margin: 0 10px;
+      vertical-align: middle;
+    }
+  }
+  &__currency {
+    display: inline-block;
+    float: right;
+    text-transform: uppercase;
+    color: #fff;
+    //margin-right: 35px;
+    padding-top: 10px;
+    position: relative;
+    &.opened .box-list {
+      display: block;
+      a:after {
+        display: none;
+      }
+    }
+    .header__currency-toggle {
+      font-size: 13px;
+      font-weight: bold;
+      color: #fff;
+      strong {
+        font-size: 15px;
+        margin-right: 5px;
+      }
+      &:after {
+        content: "";
+        display: inline-block;
+        background: url(../img/header__currency.png) no-repeat;
+        height: 7px;
+        width: 13px;
+        margin-left: 7px;
+      }
+    }
+    .header__currency-item {
+      strong {
+        font-size: 15px;
+        margin-right: 5px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+
+}
+
+@media screen and (min-width: 992px) {
+
+}
+
+@media screen and (max-width: 991px) {
+
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+
+}
+
+@media screen and (max-width: 767px) {
+
+}

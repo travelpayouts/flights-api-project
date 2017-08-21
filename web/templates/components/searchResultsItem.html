@@ -1,0 +1,87 @@
+<div class="tickets__item" ng-class="{open:open}" ng-init="termsLimit=3;open=false;">
+    <div class="tickets__block" ng-click="open = !open;termsLimit = open ? 100:3;">
+        <div class="tickets__block-wrap">
+            <div ng-repeat="segment in $ctrl.fligth" class="tickets__block-info">
+
+                <div class="tickets__date ng-slide" ng-show="open">
+                    <i class="tickets__date_out"></i>
+                    <span class="tickets__date_text">Depart Date</span>
+                    <span class="tickets__date_data">{{segment.first.departure_timestamp * 1000 | date:'dd.MM.yyyy'}}</span>
+                </div>
+                <div class="tickets__main-info">
+                    <div class="tickets__main-img">
+                        <img ng-src="//pics.avs.io/70/70/{{segment.first.operated_by}}{{$ctrl.isRetina? '@2x' : ''}}.png"
+                             alt={{segment.first.operated_by}}">
+                    </div>
+                    <div class="tickets__time-way-left">
+                        <p>{{segment.first.departure_time}}</p>
+                        <span>{{$ctrl.airports[segment.first.departure].name}}</span>
+                    </div>
+                    <div class="tickets__direct">
+                        <p>
+                            {{$ctrl.value.total_duration * 60 | secondsToTime:'%hours%h %minutes%m'}}
+                        </p>
+                        <div class="tickets__line-way"></div>
+                        <flight-line flights="segment.flight" first="segment.first.departure"
+                                     last="segment.last.arrival"></flight-line>
+                    </div>
+                    <div class="tickets__time-way-right">
+                        <p>{{segment.last.arrival_time}}</p>
+                        <span>{{$ctrl.airports[segment.last.arrival].name}}</span>
+                    </div>
+                </div>
+                <div class="tickets__other-info ng-slide" ng-show="open">
+                    <div class="tickets__other-time">
+                        {{segment.first.departure_time}}-{{segment.last.arrival_time}}
+                    </div>
+                    <div class="tickets__other-way">
+                        <ul>
+                            <li>{{segment.first.departure}}</li>
+                            <li>{{segment.last.arrival}}</li>
+                        </ul>
+                    </div>
+                    <div class="tickets__other-city">
+                        <ul>
+                            <li>{{segment.first.operating_carrier}}{{segment.first.number}}</li>
+                            <li>
+                                {{$ctrl.airports[segment.first.departure].country}}
+                            </li>
+                            <li ng-if="segment.first.aircraft">
+                                {{segment.first.aircraft}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tickets__bags">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tickets__block-sites">
+        <ul>
+            <li ng-repeat="term in $ctrl.prices| orderBy:'price'">
+                <div ng-if="$first"><p class="tickets__block-sites_topic">{{$ctrl.gates[term.id].label}}</p>
+                    <a ng-href="./redirect/{{$ctrl.searchId}}/{{term.url}}" target="_blank">
+                        <div class="tickets__block-sites-btn"><span>book for</span> <span
+                                class="tickets__block-sites-btn-price">
+                            <price-component currency="term.currency" price="term.price"></price-component>
+                        </span>
+                        </div>
+                    </a>
+                </div>
+                <div class="ng-slide tickets__block-sites-more-tickets" ng-if="!$first" ng-show="$index < termsLimit"><a
+                        ng-href="./redirect/{{$ctrl.searchId}}/{{term.url}}" target="_blank">
+                        <span class="tickets__block-sites-gate">{{$ctrl.gates[term.id].label}}</span>
+                        <span class="tickets__block-sites-price">
+                           <price-component currency="term.currency" price="term.price"></price-component>
+                        </span>
+                </a></div>
+            </li>
+        </ul>
+
+        <div ng-show="$ctrl.prices.length > 3" ng-click="open = !open;termsLimit = open ? 100:3;">
+            <p class="tickets__block-sites_more" ng-hide="termsLimit===3">Show less <i></i></p>
+            <p class="tickets__block-sites_less" ng-show="termsLimit===3">Show more proposals <i></i></p>
+        </div>
+    </div>
+</div>

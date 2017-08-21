@@ -1,0 +1,35 @@
+<div class="wrapper proposals">
+    <div ng-if="$ctrl.proposals.length > 0">
+        <div class="filter">
+            <search-results-filter
+                    count="$ctrl.proposals.length"
+                    airports="$ctrl.airports"
+                    limit="$ctrl.limit"
+                    filters-boundary="$ctrl.filtersBoundary"
+                    order-by="$ctrl.orderByParam"
+                    filter-by="$ctrl.filterByParam"
+            ></search-results-filter>
+        </div>
+        <div class="tickets">
+
+            <div ng-repeat="proposal in $ctrl.proposals |filter:$ctrl.filterBy | orderBy:$ctrl.orderBy | limitTo: $ctrl.limit as proposalsFiltered">
+                <search-results-item value="proposal"></search-results-item>
+                <!--<div ng-if="$first">-->
+                <!--{{proposal|json}}-->
+
+                <!--</div>-->
+                <div ng-if="$last" class="tickets__more-button" ng-click="$ctrl.showMore();"
+                     ng-show="(!$ctrl.isEmptyFilter() && $ctrl.limit <= proposalsFiltered.length) ||  ($ctrl.limit < $ctrl.proposals.length && $ctrl.isEmptyFilter())">
+                    <p>Show more tickets <i></i></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="proposals-message" ng-if="$ctrl.proposals.length === 0" >
+        <div ng-if="$ctrl.completed">Unfortunately, no tickets were found</div>
+        <div ng-if="!$ctrl.completed">Looking for tickets, please wait</div>
+    </div>
+</div>
+
+
+
