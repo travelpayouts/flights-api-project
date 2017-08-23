@@ -5,5 +5,6 @@ return [
     'apiToken'=> '',
     'apiMarker'=> '',
     'apiResponseLang'=> 'en',
-    'title'=> 'TravelPayouts sample app'
+    'title'=> 'TravelPayouts sample app',
+    'baseUrl'=> '/flights-api-project'
 ];
