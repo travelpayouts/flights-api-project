@@ -26,7 +26,7 @@ Download and unzip package or clone it to your web folder `git clone https://git
 
 Use [composer](https://getcomposer.org/) to install dependencies.
 
-###Installing Composer
+### Installing Composer
 
 If you do not already have Composer installed, you may do so by following the instructions at getcomposer.org. On Linux and Mac OS X, you'll run the following commands
 
