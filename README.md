@@ -1,6 +1,6 @@
 # flights-api-project
 
-This is a standalone app based on [Yii2](http://www.yiiframework.com/) on backend and [angularJs](https://angularjs.org/) on frontend. It use [Travelpayouts api](https://support.travelpayouts.com/hc/en-us/categories/200358578) for retrieving flights information and view search results on a domain or subdomain of your site. 
+This is a standalone app based on [Yii2](http://www.yiiframework.com/) on backend and [angularJs](https://angularjs.org/) on frontend. It uses [Travelpayouts api](https://support.travelpayouts.com/hc/en-us/categories/200358578) for retrieving flights information and view search results on a domain or subdomain of your site. 
 
 #### [Check out our demo](http://misc.travelpayouts.com/flights/)
 
@@ -40,7 +40,7 @@ On Windows, you'll download and run [Composer-Setup.exe](https://getcomposer.org
 Just use command `composer install`.
 
 ### Changing your app parameters
-Before first running of your app you need to set app params. All your params is located in **config/params.php**
+Before first running of your app, you need to set app params. All your params is located in **config/params.php**
 
 ```
 return [
@@ -102,7 +102,7 @@ server {
 }
 ```
 
-### When all this things is done
+### When all these things are done
 Congratulations, you completed installation and you can perform your first search.
 
 ![](https://habrastorage.org/web/fff/3a7/1b2/fff3a71b28f040ec911f448a3d460933.png)
@@ -120,7 +120,7 @@ Use command `npm install` to install all package dependencies
 
 ### [Webpack](https://webpack.github.io/)
 Use webpack to make changes to all files that you want to change.
-To recompile your frontend files you can use command: `webpack` in root directory of your project or `webpack -w` if you don’t want to manually recompile after every change.
+To recompile your frontend files you can use a command: `webpack` in root directory of your project or `webpack -w` if you don’t want to manually recompile after every change.
 
 ### Frontend directory structure
 Category | Location
