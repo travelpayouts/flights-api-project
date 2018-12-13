@@ -282,7 +282,7 @@ h3 {
       }
       i {
         display: inline-block;
-        background: url(../img/filter__top_circle.png) no-repeat;
+        background: url(#{$image-path}/filter__top_circle.png) no-repeat;
         width: 18px;
         height: 18px;
         background-position-y: 0.7px;
@@ -339,7 +339,7 @@ h3 {
 
         &:after {
           content: "";
-          background: url(../img/header__currency.png) no-repeat;
+          background: url(#{$image-path}/header__currency.png) no-repeat;
           display: block;
           height: 10px;
           width: 11px;
@@ -612,10 +612,10 @@ h3 {
       margin-right: 4px;
     }
     &_out {
-      background: url(../img/tickets__date_out.png) no-repeat;
+      background: url(#{$image-path}/tickets__date_out.png) no-repeat;
     }
     &_in {
-      background: url(../img/tickets__date_in.png) no-repeat;
+      background: url(#{$image-path}/tickets__date_in.png) no-repeat;
     }
     &_text {
       color: #a7a7a7;
@@ -800,11 +800,11 @@ h3 {
         color: $blue;
         cursor: pointer;
         i {
-          background: url(../img/tickets__block-sites_more-h.png);
+          background: url(#{$image-path}/tickets__block-sites_more-h.png);
         }
       }
       i {
-        background: url(../img/tickets__block-sites_more.png);
+        background: url(#{$image-path}/tickets__block-sites_more.png);
         display: inline-block;
         width: 11px;
         height: 7px;
@@ -843,7 +843,7 @@ h3 {
     }
     i {
       display: inline-block;
-      background-image: url(../img/tickets__more-button.png);
+      background-image: url(#{$image-path}/tickets__more-button.png);
       background-repeat: no-repeat;
       width: 15px;
       height: 8px;

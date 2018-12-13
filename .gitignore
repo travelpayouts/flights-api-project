@@ -31,3 +31,5 @@ tests/_support/_generated
 node_modules
 package-lock.json
 composer.lock
+/web/assets/
+/config/params_local.php

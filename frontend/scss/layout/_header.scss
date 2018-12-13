@@ -113,7 +113,7 @@
       &:after {
         content: "";
         display: inline-block;
-        background: url(../img/header__currency.png) no-repeat;
+        background: url(#{$image-path}/header__currency.png) no-repeat;
         height: 7px;
         width: 13px;
         margin-left: 7px;

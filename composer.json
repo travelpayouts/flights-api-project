@@ -1,27 +1,26 @@
 {
-  "name": "yiisoft/yii2-app-basic",
-  "description": "Yii 2 Basic Project Template",
+  "name": "travelpayouts/flights-api-project",
+  "description": "This is a standalone app based on Yii2 on backend and angularJs on frontend. It uses Travelpayouts api for retrieving flights information and view search results on a domain or subdomain of your site.",
   "keywords": [
     "yii2",
-    "framework",
-    "basic",
-    "project template"
+    "travelpayouts"
   ],
-  "homepage": "http://www.yiiframework.com/",
+  "homepage": "https://github.com/travelpayouts/flights-api-project",
   "type": "project",
   "license": "BSD-3-Clause",
   "support": {
-    "issues": "https://github.com/yiisoft/yii2/issues?state=open",
-    "forum": "http://www.yiiframework.com/forum/",
-    "wiki": "http://www.yiiframework.com/wiki/",
-    "irc": "irc://irc.freenode.net/yii",
-    "source": "https://github.com/yiisoft/yii2"
+    "issues": "https://github.com/travelpayouts/flights-api-project/issues",
+    "source": "https://github.com/travelpayouts/flights-api-project"
   },
   "minimum-stability": "stable",
   "repositories": [
     {
       "type": "vcs",
       "url": "https://github.com/glook/travel-payouts"
+    },
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
     }
   ],
   "require": {
@@ -29,7 +28,6 @@
     "yiisoft/yii2": "~2.0.5",
     "yiisoft/yii2-bootstrap": "~2.0.0",
     "yiisoft/yii2-swiftmailer": "~2.0.0",
-    "thewulf7/travel-payouts": "dev-fixbugs",
     "guzzlehttp/guzzle": "^6.3"
   },
   "require-dev": {

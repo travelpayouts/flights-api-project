@@ -10,10 +10,17 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
-use yii\data\ActiveDataProvider;
-use thewulf7\travelPayouts\Travel;
+use app\components\TravelPayoutsApi;
 
-class Search extends Model
+/**
+ * Class FlightsSearch
+ * @package app\models
+ * @property $marker
+ * @property $token
+ * @property $responseLang
+ * @property $tripClass
+ */
+class FlightsSearch extends Model
 {
     public $origin;
     public $destination;
@@ -24,17 +31,11 @@ class Search extends Model
     public $depart_date;
     public $return_date;
     public $lang;
-    private $apiToken;
-    private $apiMarker;
-    private $apiResponseLang;
 
 
     /**
      * @return array the validation rules.
      */
-
-
-    //@TODO Валидатор который предусматривет то, что дата возврата не меньше даты отпарвления и наоборот
     public function rules()
     {
         return [
@@ -78,6 +79,7 @@ class Search extends Model
      * Validate date
      * @param $attribute_name
      * @return bool
+     * @throws \Exception
      */
     public function dateValidator($attribute_name)
     {
@@ -144,70 +146,64 @@ class Search extends Model
         ];
     }
 
-    /**
-     * Check config parameters before validation
-     * @return bool
-     */
-    public function beforeValidate()
-    {
-        // Get Api parameters from params.php file
-        $apiParams = array_filter(Yii::$app->params, function ($key) {
-            return preg_match('/(^api)/iu', $key);
-        }, ARRAY_FILTER_USE_KEY);
-
-        foreach ($apiParams as $paramName => $paramValue) {
-            if (empty($paramValue)) {
-                // Return validation error if some of api params is Empty
-                $this->addError($paramName, Yii::t('yii', '{attribute} cannot be blank.', array(
-                    'attribute' => $paramName
-                )));
-            } else {
-                // Is value is not empty, assign value to property
-                $this->$paramName = $paramValue;
-            }
-        }
-        if (!$this->lang) {
-            $this->lang = $this->apiResponseLang;
-        }
-
-        return parent::beforeValidate();
-    }
-
     public function getTripClass()
     {
-        return $this->trip_class == '0' ? 'Y' : 'C';
+        return (int)$this->trip_class === 0 ? 'Y' : 'C';
     }
 
 
     public function search()
     {
-        // Init Api
-        $api = new Travel($this->apiToken);
-        $flightService = $api->getFlightService();
+        $api = new TravelPayoutsApi($this->token);
 
-        $flightService
-            ->setIp($_SERVER['REMOTE_ADDR'])
-            ->setHost($_SERVER['HTTP_HOST'])
-            ->setMarker($this->apiMarker)
+        $api->setHost($_SERVER['HTTP_HOST'])
+            ->setMarker($this->marker)
             ->addPassenger('adults', $this->adults)
             ->addSegment($this->origin, $this->destination, $this->depart_date);
 
         // Two way tickets
-        if ($this->return_date) {
-            $flightService->addSegment($this->destination, $this->origin, $this->return_date);
-        }
+        if ($this->return_date)
+            $api->addSegment($this->destination, $this->origin, $this->return_date);
         // Add childrens
-        if ($this->children) {
-            $flightService->addPassenger('children', $this->children);
-        }
+        if ($this->children)
+            $api->addPassenger('children', $this->children);
         // Add infants
-        if ($this->infants) {
-            $flightService->addPassenger('infants', $this->infants);
-        }
-        // Let's go searching
-        $searchData = $flightService->search($this->lang, $this->tripClass);
+        if ($this->infants)
+            $api->addPassenger('infants', $this->infants);
 
+        return $api->getSearch($this->getResponseLang(), $this->tripClass);
+    }
 
-        return $searchData;
+    public function getResults($id)
+    {
+        $api = new TravelPayoutsApi($this->token);
+        return $api->getSearchResults($id);
+    }
+
+    public function getRedirect($searchId, $urlId)
+    {
+        $api = new TravelPayoutsApi($this->token);
+        return $api->getRedirectUrl($searchId, $urlId);
+    }
+
+    public function getMarker()
+    {
+        return isset (Yii::$app->params['apiMarker']) ? Yii::$app->params['apiMarker'] : null;
+    }
+
+    public function getToken()
+    {
+        return isset(Yii::$app->params['apiToken']) ? Yii::$app->params['apiToken'] : null;
+    }
+
+    public function getResponseLang()
+    {
+        return isset(Yii::$app->params['apiResponseLang']) ? Yii::$app->params['apiResponseLang'] : 'en';
+    }
+
+    public function beforeValidate()
+    {
+        if (!$this->lang) $this->lang = $this->responseLang;
+        return parent::beforeValidate();
     }
 }

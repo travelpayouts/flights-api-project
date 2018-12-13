@@ -8,48 +8,39 @@
 
 namespace app\controllers;
 
-use app\models\Search;
+use app\models\FlightsSearch;
 use Yii;
 use \yii\rest\Controller;
-use thewulf7\travelPayouts\Travel;
 use GuzzleHttp\Client;
 
 class SearchController extends Controller
 {
     public function actionCreate()
     {
-        $result = array(
-            'status' => 'ok'
-        );
         $name = Yii::$app->request->post();
-
-        $model = new Search();
+        $model = new FlightsSearch();
         $model->attributes = $name;
         if ($model->validate()) {
-            $result['data'] = $model->search();
-        } else {
-            $result['status'] = 'error';
-            $result['data'] = $model->getErrors();
-
+            return [
+                'status' => 'ok',
+                'data' => $model->search(),
+            ];
         }
-        return $result;
-    }
 
+        return [
+            'status' => 'error',
+            'data' => $model->getErrors(),
+        ];
+    }
 
     public function actionView($id)
     {
-        $api = new Travel(Yii::$app->params['apiToken']);
-        $flightService = $api->getFlightService();
-        $searchResults = $flightService->getSearchResults($id, false);
-        echo($searchResults);
+        return FlightsSearch::instance()->getResults($id);
     }
 
     public function actionRedirect($searchId, $urlId)
     {
-        $client = new Client();
-        $response = $client->request('GET', "http://api.travelpayouts.com/v1/flight_searches/{$searchId}/clicks/{$urlId}.json");
-        $responseBody = json_decode((string)$response->getBody(), true);
-        return $responseBody;
+        return FlightsSearch::instance()->getRedirect($searchId, $urlId);
     }
 
 

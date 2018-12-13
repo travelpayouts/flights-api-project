@@ -7,23 +7,21 @@
 
 namespace app\assets;
 
-use yii\web\AssetBundle;
+use app\components\WebpackAssetBundle;
 
-/**
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @since 2.0
- */
-class AppAsset extends AssetBundle
+class AppAsset extends WebpackAssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
-    public $css = [
-        'assets/app.styles.css',
-    ];
+    public $assetsUrl = '@web/assets';
+    public $statsPath = '@webroot/assets/stats.json';
+
     public $js = [
-        'assets/vendor.bundle.js',
-        'assets/app.bundle.js'
+        '/assets/runtime.bundle.js'
     ];
-    public $depends = [
+
+    public $chunks = [
+        'vendor',
+        'app',
     ];
 }

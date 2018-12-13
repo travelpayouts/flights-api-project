@@ -47,10 +47,10 @@ footer{
 			margin-left: 20px;
 		}
 		&_facebook{
-			background: url(../img/footer__social_facebook.png) no-repeat;
+			background: url(#{$image-path}/footer__social_facebook.png) no-repeat;
 		}
 		&_twitter{
-			background: url(../img/footer__social_twitter.png) no-repeat;
+			background: url(#{$image-path}/footer__social_twitter.png) no-repeat;
 			background-position: 0 3px;
 		}
 	}

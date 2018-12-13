@@ -41,7 +41,7 @@ $radio-checked-shadow: 0 0 1px 0px rgba(0,0,0,0.05);
 		background: $checkbox-checked-bg;
 		border-color: darken($blue,10);
 		&:after {
-			background: url(../img/header__currency.png) no-repeat;
+			background: url(#{$image-path}/header__currency.png) no-repeat;
 			height: 9px;
 			margin: 2px 0 0 2px;
 			box-shadow: $checkbox-checked-shadow;

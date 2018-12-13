@@ -1,13 +1,10 @@
-// require component stylesheets
-require('./scss/app.scss');
-require('tp-ng-search/dist/tpSearchComponent.styles.css');
-require('angularjs-slider/dist/rzslider.scss');
-
 require('@uirouter/angularjs');
 require('angular-dynamic-locale');
 require('ng-slide-down');
-
 require('@iamadamjowett/angular-click-outside');
+
+require('./scss/app.scss');
+
 var app = angular.module('travelPayoutsApp', [
     require('angular-sanitize'),
     require('angular-animate'),
@@ -27,6 +24,7 @@ var app = angular.module('travelPayoutsApp', [
         var localInjector = angular.injector(['ngLocale']);
         return localInjector.get('$locale');
     }
+
     require('angular-i18n/angular-locale_ru');
     tmhDynamicLocaleCache.put('ru', getInjectedLocale());
     require('angular-i18n/angular-locale_en');
@@ -37,11 +35,12 @@ var app = angular.module('travelPayoutsApp', [
     function ($rootScope, $state, $stateParams) {
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
-
     });
+
 function requireAll(r) {
     r.keys().forEach(r);
 }
+
 requireAll(require.context('./components/', true, /\.js$/));
 requireAll(require.context('./controllers/', true, /\.js$/));
 
