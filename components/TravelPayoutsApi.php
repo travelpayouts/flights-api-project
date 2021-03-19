@@ -5,13 +5,38 @@
 
 namespace app\components;
 
-use Yii;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use Psr\Http\Message\ResponseInterface;
+use RuntimeException;
+use Yii;
+use yii\base\BaseObject;
+use yii\base\ErrorException;
 use yii\helpers\Json;
 
-class TravelPayoutsApi
+/**
+ * Class TravelPayoutsApi
+ * @package app\components
+ * @property string $locale
+ * @property string $ip
+ */
+class TravelPayoutsApi extends BaseObject
 {
-    const API_HOST = 'http://api.travelpayouts.com';
+    /**
+     * @var string
+     */
+    public $token;
+
+    /**
+     * @var string
+     */
+    public $marker;
+
+    /**
+     * @var string
+     */
+    public $host;
+
     /**
      * @var Client
      */
@@ -20,188 +45,155 @@ class TravelPayoutsApi
     /**
      * @var string
      */
-    private $_token;
+    protected $_locale = 'en';
 
-    /**
-     * @var int
-     */
-    private $_marker;
-
-    /**
-     * @var string
-     */
-    private $_host;
-
-    /**
-     * @var array
-     */
-    private $_segments = [];
-
-    /**
-     * @var array
-     */
-    private $_passengers = [
-        'adults' => 0,
-        'children' => 0,
-        'infants' => 0,
-    ];
-
-    /**
-     * @param $token
-     */
-    public function __construct($token)
+    public function init(): void
     {
-        $this->_token = $token;
+        if (!$this->token && !$this->marker) {
+            throw new ErrorException(
+                Yii::t('main', 'Can\'t find required params "{attribute}"', [
+                    'attribute' => 'token,marker',
+                ])
+            );
+        }
 
-        $this->_client = new Client(
-            [
-                'base_uri' => self::API_HOST,
-                'headers' =>
-                    [
-                        'Content-Type' => 'application/json',
-                        'X-Access-Token' => $this->_token,
-                        'Accept-Encoding' => 'gzip,deflate,sdch',
-                    ],
-            ]
-        );
-    }
-
-    /**
-     * @param string $locale
-     * @param string $trip_class
-     *
-     * @return mixed
-     * @throws \RuntimeException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function getSearch($locale = 'ru', $trip_class = 'Y')
-    {
-        $url = '/v1/flight_search';
-
-        $options = [
-            'json' => [
-                'marker' => $this->getMarker(),
-                'host' => $this->getHost(),
-                'user_ip' => $this->getIp(),
-                'locale' => in_array($locale, ['en', 'ru', 'de', 'fr', 'it', 'pl', 'th'], true) ? $locale : 'ru',
-                'trip_class' => in_array($trip_class, ['Y', 'C'], true) ? $trip_class : 'Y',
-                'passengers' => $this->getPassengers(),
-                'segments' => $this->getSegments(),
+        $this->_client = new Client([
+            'base_uri' => 'https://api.travelpayouts.com',
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'X-Access-Token' => $this->token,
+                'Accept-Encoding' => 'gzip,deflate,sdch',
             ],
-        ];
+        ]);
+    }
 
-        $options['json']['signature'] = $this->getSignature($options['json'], true);
-
-        return $this->execute($url, $options, 'POST', false);
+    protected function getAuthEndpointQuery(
+        array $query = [],
+        bool $useSignature = true
+    ): array {
+        $requestQuery = array_merge($query, [
+            'marker' => $this->marker,
+            'host' => $this->host,
+            'user_ip' => $this->getIp(),
+            'locale' => $this->locale,
+        ]);
+        if ($useSignature) {
+            $requestQuery = array_merge($requestQuery, [
+                'signature' => $this->getSignature($requestQuery),
+            ]);
+        }
+        return $requestQuery;
     }
 
     /**
-     * Get search results
-     *
-     * @param string $uuid Search ID
-     *
-     * @return mixed
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return string
      */
-    public function getSearchResults($uuid)
+    public function getLocale(): string
     {
-        $url = '/v1/flight_search_results';
-
-        $options = [
-            'uuid' => $uuid,
-        ];
-
-        return $this->execute($url, $options);
-    }
-
-
-    public function getRedirectUrl($id, $url)
-    {
-        $url = "http://api.travelpayouts.com/v1/flight_searches/{$id}/clicks/{$url}.json";
-        return $this->execute($url, []);
+        return $this->_locale;
     }
 
     /**
-     * @param string $url
+     * @param string|null $value
+     */
+    public function setLocale(?string $value): void
+    {
+        $predefinedLocaleList = ['en', 'ru', 'de', 'fr', 'it', 'pl', 'th'];
+        if (in_array($value, $predefinedLocaleList, true)) {
+            $this->_locale = $value;
+        }
+    }
+
+    /**
+     * @param $uri
      * @param array $options
-     * @param string $type
-     * @param bool|true $replaceOptions
-     *
-     * @return mixed
-     * @throws \RuntimeException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return array
+     * @throws GuzzleException
      */
-    private function execute($url, array $options, $type = 'GET', $replaceOptions = true)
+    protected function post($uri, array $options = []): array
     {
-        $params = [
-            'http_errors' => false,
-        ];
-
-        if ($replaceOptions) {
-            $paramName = $type === 'GET' ? 'query' : 'body';
-            $params[$paramName] = $options;
-        } else {
-            $params += $options;
-        }
-
-        $res = $this->getClient()->request($type, $url, $params);
-
-        $statusCode = $res->getStatusCode();
-        $body = $res->getBody();
-        if ($statusCode !== 200) {
-            $strBody = Json::decode((string)$body);
-            $message = isset($strBody['message']) ? $strBody['message'] : 'unknown';
-
-            throw new \RuntimeException("{$statusCode}:{$message}");
-        }
-
-        return $this->makeApiResponse($body);
+        return $this->processResponse($this->getClient()->post($uri, $options));
     }
 
     /**
-     * @param $jsonString
-     *
-     * @return mixed
-     * @throws \RuntimeException
+     * @param $uri
+     * @param array $options
+     * @return array
+     * @throws GuzzleException
      */
-    private function makeApiResponse($jsonString)
+    protected function get($uri, array $options = []): array
     {
-        $data = Json::decode($jsonString, true);
+        return $this->processResponse($this->getClient()->get($uri, $options));
+    }
+
+    /**
+     * @param ResponseInterface $response
+     * @return array
+     */
+    protected function processResponse(ResponseInterface $response): array
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = (string) $response->getBody();
+        $data = Json::decode($responseBody, true);
+
         if (!$data) {
-            throw new \RuntimeException("Unable to decode json response: $jsonString");
+            throw new RuntimeException(
+                "Unable to decode json response: $responseBody"
+            );
         }
 
+        if ($statusCode !== 200) {
+            $message = $data['message'] ?? 'unknown';
+            throw new RuntimeException("{$statusCode}:{$message}");
+        }
         return $data;
     }
 
     /**
-     * @param array $options
-     * @param boolean $withToken
-     * @return string
+     * Transform request options to signature format
+     * @param $options
+     * @return array
      */
-    public function getSignature(array $options, $withToken = false)
+    protected function processSignatureQuery($options): array
     {
-        ksort($options);
-
-        ksort($options['passengers']);
-
-        foreach ($options['segments'] as $key => $value) {
-            ksort($value);
-            $options['segments'][$key] = implode(':', $value);
+        $result = [];
+        if (is_array($options)) {
+            foreach ($options as $key => $value) {
+                if (is_array($value)) {
+                    $result[$key] = implode(
+                        ':',
+                        $this->processSignatureQuery($value)
+                    );
+                } else {
+                    $result[$key] = (string) $value;
+                }
+            }
         }
-
-        $options['passengers'] = implode(':', $options['passengers']);
-        $options['segments'] = implode(':', $options['segments']);
-
-        if ($withToken) $options = array_merge([$this->_token], $options);
-
-        return md5(implode(':', $options));
+        ksort($result);
+        return $result;
     }
 
     /**
-     * @return \GuzzleHttp\Client
+     * @param array $query
+     * @return string
      */
-    protected function getClient()
+    protected function getSignature(array $query): string
+    {
+        return md5(
+            implode(
+                ':',
+                array_merge(
+                    [$this->token],
+                    $this->processSignatureQuery($query)
+                )
+            )
+        );
+    }
+
+    /**
+     * @return Client
+     */
+    protected function getClient(): Client
     {
         return $this->_client;
     }
@@ -209,150 +201,46 @@ class TravelPayoutsApi
     /**
      * @return mixed
      */
-    public function getMarker()
-    {
-        return $this->_marker;
-    }
-
-    /**
-     * @param mixed $marker
-     *
-     * @return $this
-     */
-    public function setMarker($marker)
-    {
-        $this->_marker = $marker;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getHost()
-    {
-        return $this->_host;
-    }
-
-    /**
-     * @param mixed $host
-     *
-     * @return $this
-     */
-    public function setHost($host)
-    {
-        $this->_host = $host;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
     protected function getIp()
     {
-        return isset($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['HTTP_X_REAL_IP'] : Yii::$app->getRequest()->getUserIP();
+        return $_SERVER['HTTP_X_REAL_IP'] ??
+            Yii::$app->getRequest()->getUserIP();
     }
 
     /**
+     * Alias for search tickets
+     * @param array $query
+     * @return mixed
+     * @throws GuzzleException
+     */
+    public function searchFlightsTickets(array $query = []): array
+    {
+        return $this->post('/v1/flight_search', [
+            'json' => $this->getAuthEndpointQuery($query),
+        ]);
+    }
+
+    /**
+     * Get search results
+     * @param string $uuid Search ID
+     * @return mixed
+     * @throws GuzzleException
+     */
+    public function getResultsById(string $uuid): array
+    {
+        return $this->get('/v1/flight_search_results?uuid=' . $uuid);
+    }
+
+    /**
+     * @param $id
+     * @param $url
      * @return array
+     * @throws GuzzleException
      */
-    public function getSegments()
+    public function getRedirectUrl($id, $url): array
     {
-        return $this->_segments;
+        return $this->get(
+            "http://api.travelpayouts.com/v1/flight_searches/{$id}/clicks/{$url}.json"
+        );
     }
-
-    /**
-     * Add segment
-     *
-     * @param string $origin
-     * @param string $destination
-     * @param string $date
-     *
-     * @return $this
-     * @throws \Exception
-     */
-    public function addSegment($origin, $destination, $date)
-    {
-        $date = new \DateTime($date);
-
-        $this->_segments[] = [
-            'origin' => $origin,
-            'destination' => $destination,
-            'date' => $date->format('Y-m-d'),
-        ];
-
-        return $this;
-    }
-
-    /**
-     * Clear all segments
-     *
-     * @return $this
-     */
-    public function clearSegments()
-    {
-        $this->_segments = [];
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getPassengers()
-    {
-        return $this->_passengers;
-    }
-
-    /**
-     * Add $count passenger of $type type
-     *
-     * @param string $type
-     * @param int $count
-     *
-     * @return $this|bool
-     */
-    public function addPassenger($type, $count = 1)
-    {
-        if (isset($this->_passengers[$type])) {
-            $this->_passengers[$type] += $count;
-
-            return $this;
-        }
-
-        return false;
-    }
-
-    /**
-     * Remove $count passengers of $type type
-     *
-     * @param string $type
-     * @param int $count
-     *
-     * @return $this|bool
-     */
-    public function removePassenger($type, $count = 1)
-    {
-        if (isset($this->_passengers[$type])) {
-            $this->_passengers[$type] -= $count;
-
-            return $this;
-        }
-
-        return false;
-    }
-
-    /**
-     * Remove all passengers
-     *
-     * @return $this
-     */
-    public function clearPassengers()
-    {
-        $this->_passengers = [];
-
-        return $this;
-    }
-
 }

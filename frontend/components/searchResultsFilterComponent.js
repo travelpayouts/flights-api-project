@@ -1,26 +1,32 @@
-var minBy = require('lodash/minBy');
-var maxBy = require('lodash/maxBy');
-var map = require('lodash/map');
-module.exports = angular.module('travelPayoutsApp').component('searchResultsFilter', {
+import {map, maxBy, minBy} from 'lodash';
+
+export const searchResultsFilterComponent = {
     templateUrl: './templates/components/searchResultsFilter.html',
+
     bindings: {
         count: '<',
         limit: '<',
         airports: '<',
         filtersBoundary: '<',
         orderBy: '=',
-        filterBy: '='
+        filterBy: '=',
     },
-    controller: function ($scope, $timeout, $filter, currencyFactory) {
-        var self = this;
-        var currency = currencyFactory.get();
-        var currencyList = currencyFactory.getData();
+
+    controller: /* @ngInject */ function (
+        $scope,
+        $timeout,
+        $filter,
+        currencyFactory,
+    ) {
+        let self = this;
+        let currency = currencyFactory.get();
+        let currencyList = currencyFactory.getData();
 
         self.sortingParams = [
             {id: 'price', label: 'Price'},
             {id: 'duration', label: 'Travel time'},
             {id: 'dateAsc', label: 'Early flight'},
-            {id: 'dateDesc', label: 'Later flight'}
+            {id: 'dateDesc', label: 'Later flight'},
         ];
 
         self.stopsCount = [];
@@ -29,12 +35,13 @@ module.exports = angular.module('travelPayoutsApp').component('searchResultsFilt
         self.toggleSelection = function toggleSelection(type, value) {
             // Create field filter if not exist
             if (self.filterBy[type] === undefined) self.filterBy[type] = [];
-            var idx = self.filterBy[type].indexOf(value);
+            let idx = self.filterBy[type].indexOf(value);
             // Is currently selected
             if (idx > -1) {
                 self.filterBy[type].splice(idx, 1);
                 // Delete empty field filter
-                if (self.filterBy[type].length === 0) delete self.filterBy[type];
+                if (self.filterBy[type].length === 0)
+                    delete self.filterBy[type];
             }
             // Is newly selected
             else {
@@ -42,60 +49,57 @@ module.exports = angular.module('travelPayoutsApp').component('searchResultsFilt
             }
         };
 
-        self.isEmptyFilter = function () {
-            // 2  = default filtering by price and duration
-            return Object.keys(self.filterBy).length <= 2;
-        };
+        self.isEmptyFilter = () => Object.keys(self.filterBy).length <= 2;
 
         self.clearFilter = function () {
             self.filterBy = {
-                price:{
+                price: {
                     min: self.priceSlider.floor,
-                    max: self.priceSlider.ceil
+                    max: self.priceSlider.ceil,
                 },
-                duration:{
+                duration: {
                     min: self.durationSlider.floor,
-                    max: self.durationSlider.ceil
+                    max: self.durationSlider.ceil,
                 },
-            }
+            };
         };
 
         self.priceSlider = {
             floor: 0,
             ceil: 1,
-            translate: function (value) {
-                var price = (value / currencyList[currency.id]).toFixed(0);
-                return currency.view === 'start' ? currency.sign + ' ' + price : price + ' ' + currency.sign;
-            }
+
+            translate(value) {
+                let price = (value / currencyList[currency.id]).toFixed(0);
+                return currency.view === 'start'
+                    ? `${currency.sign} ${price}`
+                    : `${price} ${currency.sign}`;
+            },
         };
 
         self.durationSlider = {
             floor: 0,
             ceil: 1,
-            translate: function (value) {
-                return $filter('secondsToTime')(value * 60);
-            }
+            translate: (value) => $filter('secondsToTime')(value * 60),
         };
 
         self.$onInit = function () {
             searchUpdated();
         };
-        $scope.$on('searchUpdated', function () {
+        $scope.$on('searchUpdated', () => {
             searchUpdated();
         });
 
-        $scope.$on('changeCurrency', function () {
+        $scope.$on('changeCurrency', () => {
             currency = currencyFactory.get();
-            $timeout(function () {
+            $timeout(() => {
                 $scope.$broadcast('rzSliderForceRender');
             }, 200);
         });
 
-
         function searchUpdated() {
-            var stopCounts = [];
-            var filterData = map(self.filtersBoundary, function (item) {
-                var newItem = {
+            let stopCounts = [];
+            let filterData = map(self.filtersBoundary, (item) => {
+                let newItem = {
                     priceMin: item.price.min,
                     priceMax: item.price.max,
                     durationMin: item.flights_duration.min,
@@ -109,29 +113,36 @@ module.exports = angular.module('travelPayoutsApp').component('searchResultsFilt
 
             self.filterBy.duration = {
                 min: minBy(filterData, 'durationMin').durationMin,
-                max: maxBy(filterData, 'durationMax').durationMax * 1.5
+                max: maxBy(filterData, 'durationMax').durationMax * 1.5,
             };
 
-            self.durationSlider.floor = minBy(filterData, 'durationMin').durationMin;
-            self.durationSlider.ceil = maxBy(filterData, 'durationMax').durationMax * 1.5;
+            self.durationSlider.floor = minBy(
+                filterData,
+                'durationMin',
+            ).durationMin;
+            self.durationSlider.ceil =
+                maxBy(filterData, 'durationMax').durationMax * 1.5;
 
             self.filterBy.price = {
                 min: minBy(filterData, 'priceMin').priceMin,
-                max: maxBy(filterData, 'priceMax').priceMax
+                max: maxBy(filterData, 'priceMax').priceMax,
             };
 
             self.priceSlider.floor = minBy(filterData, 'priceMin').priceMin;
             self.priceSlider.ceil = maxBy(filterData, 'priceMax').priceMax;
         }
+    },
+};
 
-    }
-}).component('searchFilterPanel', {
+export const searchFilterPanelComponent = {
     transclude: true,
     templateUrl: './templates/components/searchFilterPanel.html',
+
     bindings: {
-        title: '<'
+        title: '<',
     },
-    controller: function ($element) {
+
+    controller($element) {
         $element.addClass('filter__panel');
-    }
-});
+    },
+};

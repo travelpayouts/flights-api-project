@@ -1,16 +1,16 @@
 @font-face {
-  font-family: 'Open Sans';
-  src: url("#{$fonts-path}/OpenSans-Light.ttf");
-  font-weight: 300;
-  font-style: normal;
-  font-stretch: normal;
-  unicode-range: U+0020-FFFD;
+    font-family: 'Open Sans';
+    src: url('#{$fonts-path}/OpenSans-Light.ttf');
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    unicode-range: U+0020-FFFD;
 }
 @font-face {
-  font-family: 'Open Sans';
-  src: url("#{$fonts-path}/OpenSans-Bold.ttf");
-  font-weight: 700;
-  font-style: normal;
-  font-stretch: normal;
-  unicode-range: U+0020-FFFD;
+    font-family: 'Open Sans';
+    src: url('#{$fonts-path}/OpenSans-Bold.ttf');
+    font-weight: 700;
+    font-style: normal;
+    font-stretch: normal;
+    unicode-range: U+0020-FFFD;
 }

@@ -1,16 +1,23 @@
-var indexController = angular.module('travelPayoutsApp').controller('indexController', function ($scope, $stateParams, tmhDynamicLocale, $state, $transitions, $window, $timeout) {
+export const indexController = /* @ngInject */ function (
+    $scope,
+    $stateParams,
+    $state,
+    $transitions,
+    $window,
+    $timeout,
+) {
     $scope.searchData = angular.copy($stateParams);
     $scope.searchUrl = $window.location.search;
 
-    $transitions.onSuccess({}, function () {
-        $timeout(function () {
+    $transitions.onSuccess({}, () => {
+        $timeout(() => {
             $scope.searchUrl = $window.location.search;
         }, 100);
     });
 
     $scope.submit = function () {
         $scope.$broadcast('initNewSearch');
-        $timeout(function () {
+        $timeout(() => {
             $state.go('search', $scope.searchData);
             $scope.searchUrl = $window.location.search;
         }, 200);
@@ -18,7 +25,7 @@ var indexController = angular.module('travelPayoutsApp').controller('indexContro
 
     //Sticky header
     $scope.stickyTop = false;
-    angular.element($window).bind("scroll", function () {
+    angular.element($window).bind('scroll', () => {
         if ($(window).scrollTop() > 65) {
             $scope.stickyTop = true;
         } else {
@@ -30,11 +37,9 @@ var indexController = angular.module('travelPayoutsApp').controller('indexContro
     });
 
     // Click on body to hide all opened popovers
-    $scope.$watch('stickyTop', function (oldVal, newVal) {
+    $scope.$watch('stickyTop', (oldVal, newVal) => {
         if (oldVal !== newVal) {
             $(document).find('body').click();
         }
     });
-});
-
-module.exports = indexController;
+};

@@ -1,6 +1,12 @@
-var searchController = angular.module('travelPayoutsApp').controller('searchController', function ($scope, searchRequest, $stateParams, $http, $timeout, currencyFactory) {
-    var self = this;
-    var count = 1;
+export const searchController = /* @ngInject */ function (
+    $scope,
+    searchRequest,
+    $stateParams,
+    $http,
+    $timeout,
+    currencyFactory,
+) {
+    let count = 1;
     $scope.$parent.searchData = $stateParams;
     // Is request complete (in percent)
     $scope.complete = 0;
@@ -16,23 +22,22 @@ var searchController = angular.module('travelPayoutsApp').controller('searchCont
     }
 
     //Prevent new request after change state
-    $scope.$on('initNewSearch',
-        function () {
-            if ($scope.doSearchPromise !== undefined) {
-                $timeout.cancel($scope.doSearchPromise);
-            }
-        });
-    function doSearch() {
+    $scope.$on('initNewSearch', () => {
+        if ($scope.doSearchPromise !== undefined) {
+            $timeout.cancel($scope.doSearchPromise);
+        }
+    });
 
+    function doSearch() {
         return $http({
             method: 'GET',
-            url: './api/search/' + $scope.searchRequest.data.search_id,
-            params: {
-                count: count
-            }
-        }).then(function (response) {
+            url: `./api/search/${$scope.searchRequest.data.search_id}`,
 
-            var lastElement = response.data[response.data.length - 1];
+            params: {
+                count,
+            },
+        }).then((response) => {
+            let lastElement = response.data[response.data.length - 1];
             Array.prototype.push.apply($scope.searchResults, response.data);
             $scope.$broadcast('searchUpdated');
             if (Object.keys(lastElement).length > 2) {
@@ -42,9 +47,8 @@ var searchController = angular.module('travelPayoutsApp').controller('searchCont
             }
             count++;
 
-            $scope.doSearchPromise = $timeout(function () {
+            $scope.doSearchPromise = $timeout(() => {
                 if (Object.keys(lastElement).length > 2) {
-
                     return doSearch();
                 } else {
                     $scope.$broadcast('searchCompleted');
@@ -52,8 +56,4 @@ var searchController = angular.module('travelPayoutsApp').controller('searchCont
             }, 5000);
         });
     }
-
-});
-
-
-module.exports = searchController;
+};

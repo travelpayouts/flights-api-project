@@ -1,56 +1,64 @@
-var findIndex = require('lodash/findIndex');
+import findIndex from 'lodash/findIndex';
 
-module.exports = angular.module('travelPayoutsApp').component('flightLine', {
+export const flightLineComponent = {
     templateUrl: './templates/components/flightLine.html',
+
     bindings: {
         flights: '<',
         first: '<',
-        last: '<'
+        last: '<',
     },
+
     require: {
-        parent: '^^searchResultsItem'
+        parent: '^^searchResultsItem',
     },
-    controller: function ($element) {
-        var self = this;
+
+    controller: /* @ngInject */ function ($element) {
+        let self = this;
         self.airports = [];
         self.cities = [];
-        var directions = ['departure', 'arrival'];
-        var originDep = {};
+        let directions = ['departure', 'arrival'];
+        let originDep = {};
         self.travelDirection = {
             departure: 'Departure from',
             arrival: 'Arrival to',
-            change: 'Change airport to'
+            change: 'Change airport to',
         };
-
 
         self.$onChanges = function () {
             self.airportsData = self.parent.airports;
             originDep[self.first] = 'first';
             originDep[self.last] = 'last';
             setAirportsData();
-
         };
 
         function setAirportsData() {
-            angular.forEach(self.flights, function (flight) {
-                angular.forEach(directions, function (direction) {
-                    var airportValues = pickBykey(flight, direction);
-                    var airport = airportValues.airport;
-                    var city = self.airportsData[airport].city_code;
+            angular.forEach(self.flights, (flight) => {
+                angular.forEach(directions, (direction) => {
+                    let airportValues = pickBykey(flight, direction);
+                    let airport = airportValues.airport;
+                    let city = self.airportsData[airport].city_code;
                     airportValues.direction = direction;
 
-                    var airportsIndex = findIndex(self.airports, {city: city});
+                    let airportsIndex = findIndex(self.airports, {city});
                     if (airportsIndex === -1) {
-                        var data = {
-                            city: city,
-                            status: originDep[airport] !== undefined ? originDep[airport] : '',
+                        let data = {
+                            city,
+                            status:
+                                originDep[airport] !== undefined
+                                    ? originDep[airport]
+                                    : '',
                             data: [airportValues],
-                            airports: [airport]
+                            airports: [airport],
                         };
                         self.airports.push(data);
                     } else {
                         self.airports[airportsIndex].data.push(airportValues);
-                        if (self.airports[airportsIndex].airports.indexOf(airport) === -1) {
+                        if (
+                            self.airports[airportsIndex].airports.indexOf(
+                                airport,
+                            ) === -1
+                        ) {
                             self.airports[airportsIndex].airports.push(airport);
                         }
                     }
@@ -59,11 +67,11 @@ module.exports = angular.module('travelPayoutsApp').component('flightLine', {
         }
 
         function pickBykey(array, searchKey) {
-            var result = {};
-            angular.forEach(array, function (value, key) {
-                var searchKeyRegexp = new RegExp(searchKey + '_?', 'g');
+            let result = {};
+            angular.forEach(array, (value, key) => {
+                let searchKeyRegexp = new RegExp(`${searchKey}_?`, 'g');
                 if (key.match(searchKeyRegexp)) {
-                    var newKey = key.replace(searchKeyRegexp, '');
+                    let newKey = key.replace(searchKeyRegexp, '');
                     if (newKey.length === 0) {
                         newKey = 'airport';
                     }
@@ -72,6 +80,5 @@ module.exports = angular.module('travelPayoutsApp').component('flightLine', {
             });
             return result;
         }
-
-    }
-});
+    },
+};

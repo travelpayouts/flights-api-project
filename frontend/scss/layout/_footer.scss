@@ -1,87 +1,80 @@
-
 /*
 ================================================================================
 |                                     FOOTER                                   |
 ================================================================================
 */
-footer{
-	background: $blue;
-	height:80px; 
-	text-align:left;
-	width:100%;
-	min-width: $min-width;
-	order: 3;	
-    -webkit-order: 3;	
+footer {
+    background: $blue;
+    height: 80px;
+    text-align: left;
+    width: 100%;
+    min-width: $min-width;
+    order: 3;
+    -webkit-order: 3;
 }
-.footer{
-	color: #fff;
-	padding: 47px 0;
-	ul li{
-		display: inline-block;
-		list-style-type: none;
-		a{
-			color: #fff;
-			font-family: $custom-font-family;
-			font-size: 14px;
-			&:hover{
-				color: #e1e1e1;
-			}
-		}
-	}
-	&__fname a{
-		float: left;
-		font-family: $custom-font-family;
-		font-size: 14px;
-		color: #fff;
-		&:hover{
-			color: #e1e1e1;
-		}
-	}
-	&__social{
-		margin-top: -7px;
-		float: right;
-		ul li a{
-			width: 30px;
-			display: inline-block;
-			height: 24px;
-			margin-left: 20px;
-		}
-		&_facebook{
-			background: url(#{$image-path}/footer__social_facebook.png) no-repeat;
-		}
-		&_twitter{
-			background: url(#{$image-path}/footer__social_twitter.png) no-repeat;
-			background-position: 0 3px;
-		}
-	}
-	&__menu{
-		float: right;
-		margin-right: 34px;
-		ul li a{
-			text-decoration: underline;
-			margin-left: 40px;
-		}
-	}
+.footer {
+    color: #fff;
+    padding: 47px 0;
+    ul li {
+        display: inline-block;
+        list-style-type: none;
+        a {
+            color: #fff;
+            font-family: $custom-font-family;
+            font-size: 14px;
+            &:hover {
+                color: #e1e1e1;
+            }
+        }
+    }
+    &__fname a {
+        float: left;
+        font-family: $custom-font-family;
+        font-size: 14px;
+        color: #fff;
+        &:hover {
+            color: #e1e1e1;
+        }
+    }
+    &__social {
+        margin-top: -7px;
+        float: right;
+        ul li a {
+            width: 30px;
+            display: inline-block;
+            height: 24px;
+            margin-left: 20px;
+        }
+        &_facebook {
+            background: url(#{$image-path}/footer__social_facebook.png)
+                no-repeat;
+        }
+        &_twitter {
+            background: url(#{$image-path}/footer__social_twitter.png) no-repeat;
+            background-position: 0 3px;
+        }
+    }
+    &__menu {
+        float: right;
+        margin-right: 34px;
+        ul li a {
+            text-decoration: underline;
+            margin-left: 40px;
+        }
+    }
 }
-
-
 
 @media screen and (max-width: 1200px) {
-	
 }
 
-@media screen and (min-width: 992px){
-	
+@media screen and (min-width: 992px) {
 }
 
 @media screen and (max-width: 991px) {
-	
 }
 
 @media screen and (min-width: 768px) and (max-width: 991px) {
-	
 }
 
 @media screen and (max-width: 767px) {
-	
 }

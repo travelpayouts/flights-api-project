@@ -9,22 +9,34 @@
 namespace app\controllers;
 
 use app\models\FlightsSearch;
+use GuzzleHttp\Exception\GuzzleException;
 use Yii;
-use \yii\rest\Controller;
+use yii\rest\Controller;
 use GuzzleHttp\Client;
 
 class SearchController extends Controller
 {
-    public function actionCreate()
+    public function actionCreate(): array
     {
-        $name = Yii::$app->request->post();
+        $requestParams = Yii::$app->request->post();
         $model = new FlightsSearch();
-        $model->attributes = $name;
+        $model->attributes = $requestParams;
         if ($model->validate()) {
-            return [
-                'status' => 'ok',
-                'data' => $model->search(),
-            ];
+            $query = $model->toArray();
+
+            try {
+                return [
+                    'status' => 'ok',
+                    'data' => Yii::$app->travelpayoutsApi->searchFlightsTickets(
+                        $query
+                    ),
+                ];
+            } catch (GuzzleException $e) {
+                return [
+                    'status' => 'error',
+                    'data' => ['exception' => $e->getMessage()],
+                ];
+            }
         }
 
         return [
@@ -33,15 +45,13 @@ class SearchController extends Controller
         ];
     }
 
-    public function actionView($id)
+    public function actionView($id): array
     {
-        return FlightsSearch::instance()->getResults($id);
+        return Yii::$app->travelpayoutsApi->getResultsById($id);
     }
 
-    public function actionRedirect($searchId, $urlId)
+    public function actionRedirect($searchId, $urlId): array
     {
-        return FlightsSearch::instance()->getRedirect($searchId, $urlId);
+        return Yii::$app->travelpayoutsApi->getRedirectUrl($searchId, $urlId);
     }
-
-
 }
