@@ -1,0 +1,24 @@
+{
+    "useTabs": false,
+    "tabWidth": 4,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "semi": true,
+    "arrowParens": "always",
+    "bracketSpacing": false,
+    "endOfLine": "lf",
+    "overrides": [
+        {
+            "files": ["*.scss"],
+            "options": {
+                "parser": "scss"
+            }
+        },
+        {
+            "files": ["*.json"],
+            "options": {
+                "parser": "json"
+            }
+        }
+    ]
+}

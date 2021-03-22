@@ -1,19 +1,20 @@
-module.exports = angular.module('travelPayoutsApp').component('preloader', {
+export const preloaderComponent = {
     templateUrl: './templates/components/preloader.html',
     bindings: {
-        progress: '<'
+        progress: '<',
     },
-    controller: function ($element) {
-        var self = this;
-        self.wrapper = $element.find('.wrapper');
-        self.progressBar = $element.find('.load__ok');
-        self.$onChanges = function () {
-            if (self.progress > 100) {
-                self.progress = 100;
+    controller: /* @ngInject */ function ($element) {
+        this.wrapper = $element.find('.wrapper');
+        this.progressBar = $element.find('.load__ok');
+        this.$onChanges = () => {
+            if (this.progress > 100) {
+                this.progress = 100;
             }
-            $(self.progressBar[0]).css({
-                width: (self.wrapper[0].clientWidth * (self.progress / 100)) - 90 + 'px'
+            $(this.progressBar[0]).css({
+                width: `${
+                    this.wrapper[0].clientWidth * (this.progress / 100) - 90
+                }px`,
             });
-        }
-    }
-});
+        };
+    },
+};

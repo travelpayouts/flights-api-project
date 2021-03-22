@@ -1,13 +1,13 @@
-@import "base/reset";
-@import "base/fonts";
-@import "components/ngFormElements";
-@import "layout/header";
-@import "layout/footer";
-@import "layout/content";
-@import "layout/media";
-@import "components/preloader";
-@import "components/expireResults";
-@import "components/redirectPage";
+@import 'base/reset';
+@import 'base/fonts';
+@import 'components/ngFormElements';
+@import 'layout/header';
+@import 'layout/footer';
+@import 'layout/content';
+@import 'layout/media';
+@import 'components/preloader';
+@import 'components/expireResults';
+@import 'components/redirectPage';
 
-@import "~angularjs-slider/dist/rzslider.scss";
-@import "~tp-ng-search/src/scss/module";
+@import '~angularjs-slider/dist/rzslider.scss';
+@import '~tp-ng-search/src/scss/module';

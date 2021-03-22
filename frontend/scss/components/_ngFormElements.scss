@@ -1,89 +1,88 @@
 /* checkbox */
-$checkbox-bg: #F6F6F6;
-$checkbox-border-color: #C3C3C3;
+$checkbox-bg: #f6f6f6;
+$checkbox-border-color: #c3c3c3;
 $checkbox-border-width: 1px;
 $checkbox-border-radius: 3px;
-$checkbox-shadow: 0 0 1px 0px rgba(0,0,0,0.05);
+$checkbox-shadow: 0 0 1px 0px rgba(0, 0, 0, 0.05);
 
 $checkbox-checked-bg: $blue;
-$checkbox-checked-shadow: 0 0 1px 0px rgba(0,0,0,0.05);
+$checkbox-checked-shadow: 0 0 1px 0px rgba(0, 0, 0, 0.05);
 
 //$checkbox-disabled-opacity: 0.5;
 
 /* radio */
-$radio-bg: #F6F6F6;
-$radio-border-color: #C3C3C3;
+$radio-bg: #f6f6f6;
+$radio-border-color: #c3c3c3;
 $radio-border-width: 1px;
 $radio-border-radius: 50%;
-$radio-shadow: 0 0 0 0px rgba(0,0,0,0);
+$radio-shadow: 0 0 0 0px rgba(0, 0, 0, 0);
 $radio-checked-bg: $blue;
-$radio-checked-shadow: 0 0 1px 0px rgba(0,0,0,0.05);
+$radio-checked-shadow: 0 0 1px 0px rgba(0, 0, 0, 0.05);
 //$radio-disabled-opacity: 0.5;
 
 .ng-checkbox {
-	top: -1px;
-	width: 21px;
-	height: 20px;
-	padding: 1px;
-	border: $checkbox-border-width solid $checkbox-border-color;
-	border-radius: $checkbox-border-radius;
-	-moz-border-radius: $checkbox-border-radius;
-	-webkit-border-radius: $checkbox-border-radius;
-	background: $checkbox-bg;
-	box-shadow: $checkbox-shadow;
-	-moz-box-shadow: $checkbox-shadow;
-	-webkit-box-shadow: $checkbox-shadow;
-	vertical-align: middle;
-	cursor: pointer;
-	border-color: #6e6e6e;
-	display: inline-block;
-	&.checked{
-		background: $checkbox-checked-bg;
-		border-color: darken($blue,10);
-		&:after {
-			background: url(#{$image-path}/header__currency.png) no-repeat;
-			height: 9px;
-			margin: 2px 0 0 2px;
-			box-shadow: $checkbox-checked-shadow;
-			-moz-box-shadow: $checkbox-checked-shadow;
-			-webkit-box-shadow: $checkbox-checked-shadow;
-			display: block;
-			position: absolute;
-			content: " ";
-			width: 12px;
-			margin-top: 5px;
-			margin-left: 3px;
-
-		}
-	}
+    top: -1px;
+    width: 21px;
+    height: 20px;
+    padding: 1px;
+    border: $checkbox-border-width solid $checkbox-border-color;
+    border-radius: $checkbox-border-radius;
+    -moz-border-radius: $checkbox-border-radius;
+    -webkit-border-radius: $checkbox-border-radius;
+    background: $checkbox-bg;
+    box-shadow: $checkbox-shadow;
+    -moz-box-shadow: $checkbox-shadow;
+    -webkit-box-shadow: $checkbox-shadow;
+    vertical-align: middle;
+    cursor: pointer;
+    border-color: #6e6e6e;
+    display: inline-block;
+    &.checked {
+        background: $checkbox-checked-bg;
+        border-color: darken($blue, 10);
+        &:after {
+            background: url(#{$image-path}/header__currency.png) no-repeat;
+            height: 9px;
+            margin: 2px 0 0 2px;
+            box-shadow: $checkbox-checked-shadow;
+            -moz-box-shadow: $checkbox-checked-shadow;
+            -webkit-box-shadow: $checkbox-checked-shadow;
+            display: block;
+            position: absolute;
+            content: ' ';
+            width: 12px;
+            margin-top: 5px;
+            margin-left: 3px;
+        }
+    }
 }
 .ng-radio {
-	width: 21px;
-	height: 20px;
-	background: inherit;
-	padding: 1px;
-	border-color: #6e6e6e;
-	display: inline-block;
-	border: $radio-border-width solid $radio-border-color;
-	border-radius: $radio-border-radius;
-	-moz-border-radius: $radio-border-radius;
-	-webkit-border-radius: $radio-border-radius;
-	background: $radio-bg;
-	box-shadow: $radio-shadow;
-	-moz-box-shadow: $radio-shadow;
-	-webkit-box-shadow: $radio-shadow;
-	vertical-align: middle;
-	cursor: pointer;
-	&.checked{
-		&:after{
-			content: " ";
-			width: 13px;
-			height: 12px;
-			background: $checkbox-checked-bg;
-			display: block;
-			position: absolute;
-			margin: 2px;
-			border-radius: 15px;
-		}
-	}
+    width: 21px;
+    height: 20px;
+    background: inherit;
+    padding: 1px;
+    border-color: #6e6e6e;
+    display: inline-block;
+    border: $radio-border-width solid $radio-border-color;
+    border-radius: $radio-border-radius;
+    -moz-border-radius: $radio-border-radius;
+    -webkit-border-radius: $radio-border-radius;
+    background: $radio-bg;
+    box-shadow: $radio-shadow;
+    -moz-box-shadow: $radio-shadow;
+    -webkit-box-shadow: $radio-shadow;
+    vertical-align: middle;
+    cursor: pointer;
+    &.checked {
+        &:after {
+            content: ' ';
+            width: 13px;
+            height: 12px;
+            background: $checkbox-checked-bg;
+            display: block;
+            position: absolute;
+            margin: 2px;
+            border-radius: 15px;
+        }
+    }
 }

@@ -1,53 +1,67 @@
-require('@uirouter/angularjs');
-require('angular-dynamic-locale');
-require('ng-slide-down');
-require('@iamadamjowett/angular-click-outside');
+import 'ng-slide-down';
+import '@iamadamjowett/angular-click-outside';
+import './scss/app.scss';
+import {module} from 'angular';
+import angularSanitize from 'angular-sanitize';
+import angularAnimate from 'angular-animate';
+import angularDynamicLocale from 'angular-dynamic-locale';
+import uiRouter from '@uirouter/angularjs';
+import {filtersModule} from './filters/module';
+import {routerConfig} from './components/router';
+import {APP_PREFIX} from './constants';
+import {componentsModule} from './components/module';
+import {factoriesModule} from './factory/module';
+import angularStrap from 'angular-strap';
+import tpNgSearch from 'tp-ng-search';
+import angularUiNotification from 'angular-ui-notification';
+import angularjsSlider from 'angularjs-slider';
 
-require('./scss/app.scss');
-
-var app = angular.module('travelPayoutsApp', [
-    require('angular-sanitize'),
-    require('angular-animate'),
+const app = module(APP_PREFIX, [
+    angularSanitize,
+    angularAnimate,
+    tpNgSearch,
+    angularUiNotification,
+    angularjsSlider,
+    angularStrap,
     'mgcrea.ngStrap.core',
     'mgcrea.ngStrap.helpers.dimensions',
     'mgcrea.ngStrap.tooltip',
     'mgcrea.ngStrap.popover',
-    'ui.router',
-    require('tp-ng-search'),
-    'tmh.dynamicLocale',
-    require('angular-ui-notification'),
+    uiRouter,
+    angularDynamicLocale,
     'ng-slide-down',
-    require('angularjs-slider'),
-    'angular-click-outside'
-]).run(function (tmhDynamicLocale, tmhDynamicLocaleCache) {
-    function getInjectedLocale() {
-        var localInjector = angular.injector(['ngLocale']);
-        return localInjector.get('$locale');
-    }
+    'angular-click-outside',
+    filtersModule,
+    factoriesModule,
+    componentsModule,
+])
+    .config(routerConfig)
+    .run(
+        /* @ngInject */ (tmhDynamicLocale, tmhDynamicLocaleCache) => {
+            const resolveLocale = () =>
+                angular.injector(['ngLocale']).get('$locale');
+            require('angular-i18n/angular-locale_ru');
+            tmhDynamicLocaleCache.put('ru', resolveLocale());
+            require('angular-i18n/angular-locale_en');
+            tmhDynamicLocaleCache.put('en', resolveLocale());
+        },
+    )
+    .config(
+        /* @ngInject */ (tmhDynamicLocaleProvider) => {
+            tmhDynamicLocaleProvider.defaultLocale('en');
+        },
+    )
+    .run(
+        /* @ngInject */ ($rootScope, $state, $stateParams) => {
+            $rootScope.$state = $state;
+            $rootScope.$stateParams = $stateParams;
+        },
+    )
+    .run(() => {
+        //Hide preloader and show app
+        const bodyClassList = document.body.classList;
+        bodyClassList.remove('loaded');
+        bodyClassList.add('web');
+    }).name;
 
-    require('angular-i18n/angular-locale_ru');
-    tmhDynamicLocaleCache.put('ru', getInjectedLocale());
-    require('angular-i18n/angular-locale_en');
-    tmhDynamicLocaleCache.put('en', getInjectedLocale());
-}).config(function (tmhDynamicLocaleProvider) {
-    tmhDynamicLocaleProvider.defaultLocale('en');
-}).run(
-    function ($rootScope, $state, $stateParams) {
-        $rootScope.$state = $state;
-        $rootScope.$stateParams = $stateParams;
-    });
-
-function requireAll(r) {
-    r.keys().forEach(r);
-}
-
-requireAll(require.context('./components/', true, /\.js$/));
-requireAll(require.context('./controllers/', true, /\.js$/));
-
-require.ensure(['./controllers/indexController'], function () {
-    angular.bootstrap(document, ['travelPayoutsApp']);
-    //Hide preloader and show app
-    $(document).find('body').removeClass('loaded').addClass('web');
-});
-
-module.exports = app;
+angular.bootstrap(document, [app]);

@@ -1,4 +1,7 @@
-module.exports = angular.module('travelPayoutsApp').controller('mainController', function ($scope, currencyFactory) {
+export const mainController = /* @ngInject */ function (
+    $scope,
+    currencyFactory,
+) {
     currencyFactory.set('usd');
     $scope.currency = currencyFactory.get();
     $scope.currencyList = currencyFactory.getLabels();
@@ -8,5 +11,4 @@ module.exports = angular.module('travelPayoutsApp').controller('mainController',
         $scope.currency = currencyFactory.get();
         $scope.$broadcast('changeCurrency');
     };
-
-});
+};

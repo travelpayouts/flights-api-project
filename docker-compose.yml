@@ -1,14 +1,9 @@
 version: '2.1'
 services:
   app:
-    image: richarvey/nginx-php-fpm:latest
+    build: .
     restart: always
     ports:
-      - '8000:80'
+      - '8081:80'
     volumes:
-      - ./:/var/www/html:delegated
-    environment:
-      - SKIP_COMPOSER=1
-      - SKIP_CHOWN=1
-      - RUN_SCRIPTS=1
-      - IS_DOCKER=true
+      - ./:/var/www/html

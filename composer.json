@@ -24,28 +24,12 @@
     }
   ],
   "require": {
-    "php": ">=5.4.0",
+    "php": ">=7.2.0",
     "yiisoft/yii2": "~2.0.5",
-    "yiisoft/yii2-bootstrap": "~2.0.0",
-    "yiisoft/yii2-swiftmailer": "~2.0.0",
-    "guzzlehttp/guzzle": "^6.3"
+    "guzzlehttp/guzzle": "^7.0"
   },
   "require-dev": {
-    "yiisoft/yii2-debug": "~2.0.0",
-    "yiisoft/yii2-gii": "~2.0.0",
-    "yiisoft/yii2-faker": "~2.0.0",
-    "codeception/base": "^2.2.3",
-    "codeception/verify": "~0.3.1",
-    "codeception/specify": "~0.4.3"
-  },
-  "config": {
-    "process-timeout": 1800,
-    "fxp-asset": {
-      "installer-paths": {
-        "npm-asset-library": "vendor/npm",
-        "bower-asset-library": "vendor/bower"
-      }
-    }
+    "phpunit/phpunit": "^9.5"
   },
   "scripts": {
     "post-create-project-cmd": [
@@ -57,13 +41,17 @@
       "setPermission": [
         {
           "runtime": "0777",
-          "web/assets": "0777",
-          "yii": "0755"
+          "web/assets": "0777"
         }
       ],
       "generateCookieValidationKey": [
         "config/web.php"
       ]
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "App\\Tests\\" : "tests/unit"
     }
   }
 }
