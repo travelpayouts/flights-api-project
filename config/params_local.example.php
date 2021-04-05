@@ -1,6 +1,6 @@
 <?php
 
-$params = [
+return [
 	// set target language
 	'language' => 'en-US',
 	// set source language
@@ -13,10 +13,3 @@ $params = [
 		'baseUrl' => '' // Path of your app (for example: if your project url is http//site.com/flight set 'baseUrl'=> '/flights', if it in root directory set 'baseUrl'=> '/'
 	]
 ];
-
-// Don't change anything below this line
-$localParamsPath = __DIR__ . DIRECTORY_SEPARATOR . 'params_local.php';
-if (file_exists($localParamsPath))
-    $params = array_merge($params, require($localParamsPath));
-
-return $params;

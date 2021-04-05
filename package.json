@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "watch": "./node_modules/.bin/webpack -w --progress --env.mode dev",
+    "start": "./node_modules/.bin/webpack -w --progress --env.mode dev",
     "build": "./node_modules/.bin/webpack --env.mode production"
   },
   "author": "",

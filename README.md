@@ -1,6 +1,6 @@
 # flights-api-project
 
-This is a standalone app based on [Yii2](http://www.yiiframework.com/) on backend and [angularJs](https://angularjs.org/) on frontend. It uses [Travelpayouts api](https://support.travelpayouts.com/hc/en-us/categories/200358578) for retrieving flights information and view search results on a domain or subdomain of your site. 
+This is a standalone app based on [Yii2](http://www.yiiframework.com/) on backend and [angularJs](https://angularjs.org/) on frontend. It uses [Travelpayouts api](https://support.travelpayouts.com/hc/en-us/categories/200358578) for retrieving flights information and view search results on a domain or subdomain of your site.
 
 #### [Check out our demo](http://misc.travelpayouts.com/flights/)
 
@@ -11,7 +11,7 @@ This app using [Travelpayouts flights search API](https://www.travelpayouts.com/
 * Design prototypes of search result;
 * Description of your project;
 * How you will use the search API?
-* Why aren’t the standard methods of integration ([search forms](https://support.travelpayouts.com/hc/en-us/articles/203638588-Search-form), [White Label](https://support.travelpayouts.com/hc/en-us/categories/115000474487), [API access to data](https://support.travelpayouts.com/hc/en-us/articles/203956163-Travel-insights-with-Travelpayouts-Data-API)) suitable for you. 
+* Why aren’t the standard methods of integration ([search forms](https://support.travelpayouts.com/hc/en-us/articles/203638588-Search-form), [White Label](https://support.travelpayouts.com/hc/en-us/categories/115000474487), [API access to data](https://support.travelpayouts.com/hc/en-us/articles/203956163-Travel-insights-with-Travelpayouts-Data-API)) suitable for you.
 
 **[More information about flights search api](https://support.travelpayouts.com/hc/en-us/categories/200358578)**
 
@@ -42,22 +42,30 @@ Just use command `composer install`.
 ### Changing your app parameters
 Before first running of your app, you need to set app params. All your params is located in **config/params.php**
 
-```
+```php
+<?php
+
 return [
-    'adminEmail' => 'admin@example.com',
-    'apiToken'=> '', // Token https://www.travelpayouts.com/developers/api
-    'apiMarker'=> '', // Marker https://www.travelpayouts.com/developers/api
-    'apiResponseLang'=> 'en', // Response language : en,ru,de,es,fr,it,pl,th.
-    'title'=> 'TravelPayouts sample app', // Title of your app
-    'baseUrl'=> '/flights-api-project' // Path of your app (for example: if your project url is http//site.com/flight set 'baseUrl'=> '/flights', if it in root directory set 'baseUrl'=> '/'
+    // set target language
+    'language' => 'en-US',
+    // set source language
+    'sourceLanguage' => 'en-US',
+    'params' => [
+        'apiToken' => 'e451ad62a0e8468732b6e1ada1e58223', // Token https://www.travelpayouts.com/programs/100/tools/api
+        'apiMarker' => '132474', // Marker https://www.travelpayouts.com/programs/100/tools/api
+        'apiResponseLang' => 'en', // Response language : en,ru,de,es,fr,it,pl,th.
+        'title' => 'TravelPayouts sample app', // Title of your app
+        'baseUrl' => '/flights-api-project', // Path of your app (for example: if your project url is http//site.com/flight set 'baseUrl'=> '/flights', if it in root directory set 'baseUrl'=> ''
+    ],
 ];
+
 ```
 
-### Setting webserver 
-* [Apache HTTP server](http://httpd.apache.org/) users have all needed .htaccess files out of box. 
+### Setting webserver
+* [Apache HTTP server](http://httpd.apache.org/) users have all needed .htaccess files out of box.
 * [Nginx HTTP server](http://nginx.org/) users should install PHP as an [FPM SAPI](http://php.net/install.fpm). You may use the following Nginx configuration, replacing `path/to/basic/web` with the actual path for `basic/web` and `mysite.local` with the actual hostname to serve.
 
-```
+```nginx
 server {
     charset utf-8;
     client_max_body_size 128M;
@@ -120,7 +128,8 @@ Use command `npm install` to install all package dependencies
 
 ### [Webpack](https://webpack.github.io/)
 Use webpack to make changes to all files that you want to change.
-To recompile your frontend files you can use a command: `webpack` in root directory of your project or `webpack -w` if you don’t want to manually recompile after every change.
+
+To recompile your frontend files you can use a command: `npm run build` in root directory of your project or `npm run start` if you don’t want to manually recompile after every change.
 
 ### Frontend directory structure
 Category | Location
@@ -131,5 +140,6 @@ Components  | `/frontend/components`
 Controllers  | `/frontend/controllers`
 Templates |  `/web/templates`
 Stylesheets (scss) |  `/frontend/scss`
+
 
 

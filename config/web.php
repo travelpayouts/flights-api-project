@@ -1,5 +1,10 @@
 <?php
 
+use yii\i18n\PhpMessageSource;
+use yii\rest\UrlRule;
+use yii\log\FileTarget;
+use yii\web\JsonParser;
+use yii\caching\FileCache;
 use app\components\TravelPayoutsApi;
 use yii\helpers\ArrayHelper;
 
@@ -24,11 +29,11 @@ return ArrayHelper::merge([
 			// !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
 			'cookieValidationKey' => 'Dup2x1YhKSYBPDCpbulnNCPoMaOAyHxf',
 			'parsers' => [
-				'application/json' => 'yii\web\JsonParser', // required for POST input via `php://input`
+				'application/json' => JsonParser::class, // required for POST input via `php://input`
 			],
 		],
 		'cache' => [
-			'class' => 'yii\caching\FileCache',
+			'class' => FileCache::class,
 		],
 		'user' => [
 			'identityClass' => 'app\models\User',
@@ -41,7 +46,7 @@ return ArrayHelper::merge([
 			'traceLevel' => YII_DEBUG ? 3 : 0,
 			'targets' => [
 				[
-					'class' => 'yii\log\FileTarget',
+					'class' => FileTarget::class,
 					'levels' => ['error', 'warning'],
 				],
 			],
@@ -51,7 +56,7 @@ return ArrayHelper::merge([
 			'enablePrettyUrl' => true,
 			'showScriptName' => false,
 			'rules' => [
-				['class' => 'yii\rest\UrlRule', 'controller' => 'search', 'pluralize' => false, 'prefix' => 'api'],
+				['class' => UrlRule::class, 'controller' => 'search', 'pluralize' => false, 'prefix' => 'api'],
 				'POST api/search/redirect/<searchId:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}>/<urlId:.\d+>' => 'search/redirect',
 				'redirect/<searchId:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}>/<urlId:.\d+>' => 'site/index',
 				'api/search/<id:.*?>' => 'search/view',
@@ -61,7 +66,7 @@ return ArrayHelper::merge([
 		'i18n' => [
 			'translations' => [
 				'main*' => [
-					'class' => 'yii\i18n\PhpMessageSource',
+					'class' => PhpMessageSource::class,
 					'fileMap' => [
 						'main' => 'main.php',
 					],
