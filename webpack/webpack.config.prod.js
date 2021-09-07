@@ -2,38 +2,27 @@
  * Created by: Andrey Polyakov (andrey@polyakov.im)
  */
 
-import webpack from 'webpack';
-import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
+import {LoaderOptionsPlugin} from 'webpack';
+import TerserJSPlugin from 'terser-webpack-plugin';
 
 module.exports = {
     optimization: {
         minimizer: [
-            // we specify a custom UglifyJsPlugin here to get source maps in production
-            new UglifyJsPlugin({
+            new TerserJSPlugin({
                 parallel: true,
-                sourceMap: false,
-                uglifyOptions: {
-                    ie8: false,
-                    // ecma: 6,
+                terserOptions: {
                     mangle: false,
-                    output: {
-                        comments: false,
-                        beautify: false,
-                    },
-                    compress: false,
-                    warnings: false,
-                    comments: false
-                }
-            })
-        ]
+                },
+            }),
+        ],
     },
     plugins: [
-        new webpack.LoaderOptionsPlugin({
+        new LoaderOptionsPlugin({
             sourceMap: false,
             minimize: false,
             discardComments: {
-                removeAll: true
-            }
-        })
-    ]
+                removeAll: true,
+            },
+        }),
+    ],
 };

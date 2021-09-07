@@ -62,7 +62,7 @@ class WebpackAssetBundle extends AssetBundle
                     $this->_webpackAssets = $webpackStats['assetsByChunkName'];
                 }
             } else {
-                throw new \Exception('It seems that you are forgot to compile your frontend files with webpack. Check documentation at https://github.com/travelpayouts/flights-api-project');
+                throw new \Exception('It seems that you forgot to compile your frontend files with webpack. Check documentation at https://github.com/travelpayouts/flights-api-project');
             }
         }
         return $this->_webpackAssets;
