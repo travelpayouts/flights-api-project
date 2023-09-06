@@ -31,7 +31,7 @@
     "cmelo-angular-sticky": "^1.0.2",
     "controllers": "0.0.2",
     "html-loader": "^0.5.5",
-    "jquery": "3.3.1",
+    "jquery": "3.5.0",
     "lodash": "^4.17.11",
     "ng-slide-down": "^0.4.2",
     "tp-ng-search": "^0.1.0"
